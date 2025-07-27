@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+
+	config "github.com/parth469/go-basic-server/util/config"
 )
 
 func main() {
+	config.Load()
 	route := http.NewServeMux()
 
 	route.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
@@ -13,9 +17,11 @@ func main() {
 	})
 
 	server := http.Server{
-		Addr:    ":3030",
+		Addr:    config.App.Port,
 		Handler: route,
 	}
 
-	server.ListenAndServe()
+	fmt.Println("Server Start on", server.Addr)
+
+	log.Fatal(server.ListenAndServe())
 }
