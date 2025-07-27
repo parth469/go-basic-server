@@ -1,11 +1,11 @@
 package config
 
 import (
-	"log"
 	"os"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
+	"github.com/parth469/go-basic-server/util/logger"
 )
 
 type AppConfig struct {
@@ -17,7 +17,7 @@ var App AppConfig
 
 func Load() {
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("Warning: .env file not found, using system environment variables")
+		logger.Log.Fatal("Warning: .env file not found, using system environment variables", err)
 	}
 
 	App = AppConfig{
@@ -29,13 +29,13 @@ func Load() {
 	if err := validate.Struct(App); err != nil {
 		if validationErrors, ok := err.(validator.ValidationErrors); ok {
 			for _, fieldErr := range validationErrors {
-				log.Printf("Validation error: Field '%s' failed on the '%s' tag", fieldErr.Field(), fieldErr.Tag())
+				logger.Log.Warn("Validation error: Field '%s' failed on the '%s' tag", fieldErr.Field(), fieldErr.Tag())
 			}
-			log.Fatal("Environment variable validation failed")
+			logger.Log.Fatal("Environment variable validation failed", nil)
 		} else {
-			log.Fatalf("Unexpected validation error: %v", err)
+			logger.Log.Fatal("Unexpected validation error: %v", err)
 		}
 	}
 
-	log.Println("Environment variable Load Successfully")
+	logger.Log.Info("Environment variable Load Successfully")
 }
