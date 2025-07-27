@@ -13,7 +13,7 @@ func main() {
 	route := http.NewServeMux()
 
 	route.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Welcome to basic golang server")
+		fmt.Fprintln(w, "test")
 	})
 
 	server := http.Server{
