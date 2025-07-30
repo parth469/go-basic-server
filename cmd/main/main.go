@@ -4,12 +4,19 @@ import (
 	"fmt"
 	"net/http"
 
-	config "github.com/parth469/go-basic-server/util/config"
+	"github.com/parth469/go-basic-server/internal/database"
+	"github.com/parth469/go-basic-server/util/config"
 	"github.com/parth469/go-basic-server/util/logger"
 )
 
 func main() {
 	config.Load()
+
+	database.Connect()
+	defer database.Close()
+
+	database.Migrate()
+
 	route := http.NewServeMux()
 
 	route.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
