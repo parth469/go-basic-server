@@ -45,7 +45,7 @@ func ResponseWriter(w http.ResponseWriter, r *http.Request, data any) {
 	}
 
 	response := SuccessResponse{
-		Timestamp: time.Now().Format(time.RFC3339),
+		Timestamp: time.Now().Format("2006-01-02T15:04:05"),
 		Method:    r.Method,
 		Status:    status,
 		Message:   message,
@@ -84,7 +84,7 @@ func ErrorWriter(w http.ResponseWriter, r *http.Request, status int, err error) 
 	}
 
 	response := ErrorResponse{
-		Timestamp: time.Now().Format(time.RFC3339),
+		Timestamp: time.Now().Format("2006-01-02T15:04:05"),
 		Method:    r.Method,
 		Status:    status,
 		Message:   message,

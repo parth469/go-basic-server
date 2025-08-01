@@ -15,3 +15,25 @@ type User struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
 	IsActive  bool      `gorm:"default:true" json:"is_active"`
 }
+
+type UserRow struct {
+	ID        int       `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	IsActive  bool      `json:"is_active"`
+}
+
+type Users []UserRow
+
+type CreateUser struct {
+	Name  string `json:"name" validate:"required,max=100"`
+	Email string `json:"email" validate:"required,max=255,email"`
+}
+
+type UpdateUser struct {
+	Name     *string `json:"name,omitempty" validate:"omitempty,max=100"`
+	Email    *string `json:"email,omitempty" validate:"omitempty,max=255,email"`
+	IsActive *bool   `json:"is_active,omitempty" validate:"omitempty,boolean"`
+}

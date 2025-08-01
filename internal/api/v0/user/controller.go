@@ -3,6 +3,8 @@ package user
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/parth469/go-basic-server/util/helper"
 )
 
 func Get(w http.ResponseWriter, r *http.Request) {
@@ -22,5 +24,21 @@ func GetById(w http.ResponseWriter, r *http.Request) {
 }
 
 func Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "CREATE USER")
+	body, validateErr := helper.ValidateBody[CreateUser](r)
+
+	if validateErr != nil {
+		helper.ErrorWriter(w, r, 422, validateErr)
+		return
+	}
+
+	creationErr := ProgressCreation(body)
+
+	if creationErr != nil {
+		helper.ErrorWriter(w, r, 500, creationErr)
+		return
+
+	}
+
+	helper.ResponseWriter(w, r, body)
+
 }
