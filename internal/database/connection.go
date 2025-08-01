@@ -54,8 +54,8 @@ func Connect() error {
 func Close() error {
 	sqlDB, err := DB.DB()
 	if err != nil {
-		logger.Log.Fatal("failed to retrieve database instance: %v", err)
-		return
+		logger.Log.Error("failed to retrieve database instance: %v", err)
+		return err
 	}
 
 	if err := sqlDB.Close(); err != nil {
@@ -63,6 +63,8 @@ func Close() error {
 	} else {
 		logger.Log.Info("Database connection closed successfully")
 	}
+
+	return nil
 }
 
 func Migrate() error {
@@ -76,7 +78,8 @@ func Migrate() error {
 	migrationsDir := "internal/database/migrations"
 
 	if err := goose.Up(sqlDB, migrationsDir); err != nil {
-		return fmt.Errorf("failed to apply migrations from '%s': %v", err)
+		logger.Log.Error("failed to apply migrations from '%s': %v", err)
+		return err
 	}
 
 	logger.Log.Info("Database migrations applied successfully from '%s'", migrationsDir)

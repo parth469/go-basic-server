@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
+	"github.com/parth469/go-basic-server/internal/api"
 	"github.com/parth469/go-basic-server/internal/database"
 	"github.com/parth469/go-basic-server/util/config"
 	"github.com/parth469/go-basic-server/util/logger"
@@ -19,10 +19,7 @@ func main() {
 
 	route := http.NewServeMux()
 
-	route.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		logger.Log.Info("Hello")
-		fmt.Fprintln(w, "test")
-	})
+	api.SetupAPIRoutes(route, "/api")
 
 	server := http.Server{
 		Addr:    config.App.Port,
