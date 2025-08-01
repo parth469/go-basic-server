@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/parth469/go-basic-server/internal/api"
-	"github.com/parth469/go-basic-server/internal/database"
+	// "github.com/parth469/go-basic-server/internal/database"
 	"github.com/parth469/go-basic-server/util/config"
 	"github.com/parth469/go-basic-server/util/logger"
 )
@@ -12,14 +12,12 @@ import (
 func main() {
 	config.Load()
 
-	database.Connect()
-	defer database.Close()
+	// database.Connect()
+	// defer database.Close()
 
-	database.Migrate()
+	// database.Migrate()
 
-	route := http.NewServeMux()
-
-	api.SetupAPIRoutes(route, "/api")
+	route := api.APIRoutes()
 
 	server := http.Server{
 		Addr:    config.App.Port,

@@ -6,6 +6,10 @@ import (
 	"github.com/parth469/go-basic-server/internal/api/v0/user"
 )
 
-func V0Routes(route *http.ServeMux, prefix string) {
-	user.UserRoutes(route, prefix+"/user")
+func Routes() http.Handler {
+	mux := http.NewServeMux()
+
+	mux.Handle("/", user.UserRoutes())
+
+	return http.StripPrefix("/v0", mux)
 }

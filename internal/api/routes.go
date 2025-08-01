@@ -7,11 +7,15 @@ import (
 	v0 "github.com/parth469/go-basic-server/internal/api/v0"
 )
 
-func SetupAPIRoutes(route *http.ServeMux, prefix string) {
 
-	route.HandleFunc(prefix+"/ping", func(w http.ResponseWriter, r *http.Request) {
+func APIRoutes() http.Handler {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Pong")
 	})
 
-	v0.V0Routes(route, prefix+"/v0")
+	mux.Handle("/", v0.Routes())
+
+	return http.StripPrefix("/api", mux)
 }
