@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/parth469/go-basic-server/internal/api/middleware"
 	v0 "github.com/parth469/go-basic-server/internal/api/v0"
 )
-
 
 func APIRoutes() http.Handler {
 	mux := http.NewServeMux()
@@ -17,5 +17,6 @@ func APIRoutes() http.Handler {
 
 	mux.Handle("/", v0.Routes())
 
-	return http.StripPrefix("/api", mux)
+	wrappedHandler := middleware.ApiLogger(mux)
+	return http.StripPrefix("/api", wrappedHandler)
 }
