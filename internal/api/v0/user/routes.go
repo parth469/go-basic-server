@@ -7,7 +7,7 @@ import (
 func UserRoutes() http.Handler {
 	mux := http.NewServeMux()
 
-	// Register all your routes
+	mux.HandleFunc("POST /login", Login) // Create new user
 	mux.HandleFunc("GET /users", Get)     // List all users
 	mux.HandleFunc("POST /users", Create) // Create new user
 

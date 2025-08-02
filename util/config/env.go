@@ -1,16 +1,17 @@
 package config
 
 import (
-	"os"
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
 	"github.com/parth469/go-basic-server/util/logger"
+	"os"
 )
 
 type AppConfig struct {
-	Env  string `validate:"required,oneof=development production test"`
-	Port string `json:"port" validate:"required"`
-	Database string `json:"database" validate:"required"` 
+	Env       string `validate:"required,oneof=development production test"`
+	Port      string `json:"port" validate:"required"`
+	Database  string `json:"database" validate:"required"`
+	SecretKey string `json:"secret_Key" validate:"required"`
 }
 
 var App AppConfig
@@ -21,9 +22,10 @@ func Load() {
 	}
 
 	App = AppConfig{
-		Port: os.Getenv("PORT"),
-		Env:  os.Getenv("ENVIRONMENT"),
-		Database: os.Getenv("DATABASE"),
+		Port:      os.Getenv("PORT"),
+		Env:       os.Getenv("ENVIRONMENT"),
+		Database:  os.Getenv("DATABASE"),
+		SecretKey: os.Getenv("SECRETKEY"),
 	}
 
 	validate := validator.New(validator.WithRequiredStructEnabled())

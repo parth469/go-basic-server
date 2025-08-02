@@ -13,6 +13,7 @@ type Logger struct {
 
 func (l *Logger) Info(fmt string, data ...any) { l.Logger.Info().Msgf(fmt, data...) }
 
+
 func (l *Logger) Error(format string, err error, args ...any) {
 	if err != nil {
 		l.Logger.Error().Msgf(format+": %v", append(args, err)...)
@@ -40,7 +41,7 @@ func (l *Logger) Fatal(format string, error error, args ...any) {
 func Formatter(w io.Writer, a *log.FormatterArgs) (int, error) {
 	levelColor := map[string]string{
 		"debug": "\033[36m", // Cyan
-		"info":  "\033[34m", // Blue
+		"info":  "\033[32m", // Green
 		"warn":  "\033[33m", // Yellow
 		"error": "\033[31m", // Red
 		"fatal": "\033[31;1m", // Dark Red (Bold Red)

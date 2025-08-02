@@ -3,6 +3,7 @@ package user
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/parth469/go-basic-server/util/helper"
 )
@@ -40,5 +41,29 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helper.ResponseWriter(w, r, body)
+
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	user := UserRow{
+		ID:        1,
+		Name:      "John Doe",
+		Email:     "john.doe@example.com",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		IsActive:  true,
+	}
+
+	token, err := helper.CreateToken(user)
+
+	if err != nil {
+		helper.ErrorWriter(w, r, 500, err)
+		return
+	}
+
+	helper.ResponseWriter(w, r, map[string]interface{}{
+		"token": token,
+	})
+	return
 
 }
