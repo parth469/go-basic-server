@@ -24,20 +24,30 @@ func CreateToken(data any) (string, error) {
 	return tokenString, nil
 }
 
-func verifyToken(tokenString string) error {
-	secretKey := config.App.SecretKey
+func VerifyToken(tokenString string) (map[string]interface{}, error) {
+	secretKey := []byte(config.App.SecretKey)
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil
 	})
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if !token.Valid {
-		return fmt.Errorf("invalid token")
+		return nil, fmt.Errorf("invalid token")
 	}
 
-	return nil
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, fmt.Errorf("invalid token claims format")
+	}
+
+	payload, ok := claims["data"].(map[string]interface{})
+	if !ok {
+		return nil, fmt.Errorf("payload 'data' not found or invalid in token")
+	}
+
+	return payload, nil
 }
